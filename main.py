@@ -21,7 +21,7 @@ with col2:
 
 
 
-genai.configure(api_key="AIzaSyAY0Cc58x2e2TnirWvXJJPnbjdHCuLH03I")
+genai.configure(api_key="gemini_API_Key")
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Initialize the webcam to capture video
