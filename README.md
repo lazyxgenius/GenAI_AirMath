@@ -1,3 +1,4 @@
+main.py code is modified to perform the task mentioned in the prompt entered at runtime in streamlit frontend. NOT JUST AIRMATH
 # AirMath
 
 Application that allows you to write mathematical equations in the air using hand gestures, captures the equation using your webcam, and then solves it using a generative AI model. The results are displayed in real-time on a web interface powered by Streamlit.
