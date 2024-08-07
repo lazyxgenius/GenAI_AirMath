@@ -14,14 +14,11 @@ with col1:
     FRAME_WINDOW = st.image([])
 
 with col2:
-    output_text_area = st.title("Answer")
-    output_text_area = st.subheader("")
+    output_area = st.title("Answer")
+    output_text_area = st.empty()
 
 
-
-
-
-genai.configure(api_key="gemini_API_Key")
+genai.configure(api_key="gemini_API_key")
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Initialize the webcam to capture video
@@ -30,6 +27,7 @@ cap.set(3, 1280)
 cap.set(4, 720)
 # Initialize the HandDetector class with the given parameters
 detector = HandDetector(staticMode=False, maxHands=1, modelComplexity=1, detectionCon=0.7, minTrackCon=0.5)
+
 
 def getHandinfo(img):
     # Find hands in the current frame
@@ -74,7 +72,7 @@ def sendToAI(model, canvas, fingers):
     if fingers == [1, 1, 1, 1, 0]:
         pil_image = Image.fromarray(canvas)
         # convert image into PIL image before sending
-        response = model.generate_content(["Solve this Math Problem", pil_image])
+        response = model.generate_content(["Solve this Math Problem and explain your answer", pil_image])
         return response.text
 
 
@@ -106,7 +104,7 @@ while True:
     # Streamlit frontend setup
     FRAME_WINDOW.image(image_combined, channels="BGR")
     if output_text:
-        output_text_area.text(output_text)
+        output_text_area.write(output_text)
 
     # Display the images in a window
     # cv2.imshow("Image", img)
