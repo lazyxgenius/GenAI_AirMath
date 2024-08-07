@@ -10,15 +10,22 @@ st.set_page_config(layout="wide")
 col1, col2 = st.columns([2,1]) # 2:1 split
 
 with col1:
-    run = st.checkbox("Run", value=True)
-    FRAME_WINDOW = st.image([])
+    prompt = st.text_input("Enter your prompt:", "")  # Add this line
+
+    if prompt:  # Modify this condition
+        # Open camera and proceed with the rest of the logic
+        FRAME_WINDOW = st.image([])  # This will now only run if the prompt is provided
+    else:
+        st.warning("Please enter a prompt and press ENTER to start the camera.")
+        # will take around 1 min
+
 
 with col2:
     output_area = st.title("Answer")
     output_text_area = st.empty()
 
 
-genai.configure(api_key="gemini_API_key")
+genai.configure(api_key="AIzaSyAY0Cc58x2e2TnirWvXJJPnbjdHCuLH03I")
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Initialize the webcam to capture video
@@ -68,11 +75,11 @@ def draw(info, prev_pos, canvas):
     return current_pos, canvas
 
 
-def sendToAI(model, canvas, fingers):
+def sendToAI(model, canvas, fingers, prompt):
     if fingers == [1, 1, 1, 1, 0]:
         pil_image = Image.fromarray(canvas)
         # convert image into PIL image before sending
-        response = model.generate_content(["Solve this Math Problem and explain your answer", pil_image])
+        response = model.generate_content([prompt, pil_image])
         return response.text
 
 
@@ -97,7 +104,7 @@ while True:
         fingers, lmlist = info
         # print(fingers)
         prev_pos, canvas = draw(info, prev_pos, canvas)
-        output_text = sendToAI(model, canvas, fingers)
+        output_text = sendToAI(model, canvas, fingers, prompt)
     # Merging the image and canvas
     image_combined = cv2.addWeighted(img, 0.7, canvas, 0.3, 0)
 
